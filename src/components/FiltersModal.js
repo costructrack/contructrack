@@ -29,7 +29,7 @@ export default function FiltersModal({ isOpen, handleClose, filters, updateFilte
                                           <p>Presione en los filtros para editarlos</p>
                                           <Accordion variant='shadow'>
                                                 <AccordionItem aria-label='xd' title="Tipo de operación" subtitle={OPERATION_TYPES[parseInt(filters?.operationType,10)]} >
-                                                      <RadioGroup value={filters?.operationType} onValueChange={(val) => {updateFilter('operationType', val)}} label='Seleccione los tipos de operación'>
+                                                      <RadioGroup value={filters?.operationType} onValueChange={(val) => {updateFilter('operationType', val)}} >
                                                             {Object.keys(OPERATION_TYPES).map((operation, index) => (
                                                                   <Radio 
                                                                         key={operation}

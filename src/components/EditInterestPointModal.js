@@ -9,7 +9,7 @@ const MapInputComponent = dynamic(() => import('../components/MapInputComponent'
   ssr: false
 });
 
-export default function EditInterestPointModal({ isOpen, handleClose, interestPoints, id, editInterestPoint }) {
+export default function EditInterestPointModal({ isOpen, handleClose, interestPoints, id, editInterestPoint, cleanInterestPoints }) {
 
       const [lat, setLat] = useState(interestPoints.find(point => point.id === id)?.Latitude);  
       const [lng, setLng] = useState(interestPoints.find(point => point.id === id)?.Longitude);
@@ -54,7 +54,7 @@ export default function EditInterestPointModal({ isOpen, handleClose, interestPo
                   isOpen={isOpen}
                   scrollBehavior='inside'
                   onOpenChange={(open) => {
-                        if (!open) handleClose(1, false);
+                        if (!open) {cleanInterestPoints(); handleClose(1, false)};
                   }}
             >
                   <ModalContent>

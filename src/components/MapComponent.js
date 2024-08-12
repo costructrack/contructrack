@@ -14,7 +14,7 @@ const containerStyle = {
 
 
 
-const MapComponent = ({ products, filters, updateFilter }) => {
+const MapComponent = ({ products, filters, updateFilter, interestPoints, setInterestPoints }) => {
 
       // Map options
       const mapOptions = useMemo(() => ({
@@ -30,7 +30,6 @@ const MapComponent = ({ products, filters, updateFilter }) => {
       const [mapZoom, setMapZoom] = useState(15)
 
       // Interest points
-      const [interestPoints, setInterestPoints] = useState([{ id: 1, Latitude: -12.0464, Longitude: -77.0428, isOpen: false, radius: 1500 }]);
       const [selectedInterestPoint, setSelectedInterestPoint] = useState(1)
       const [isEditInterestPointModalOpen, setIsInterestPointModalOpen] = useState(false)
 
@@ -93,6 +92,23 @@ const MapComponent = ({ products, filters, updateFilter }) => {
             setInterestPoints(prevPoints =>
             prevPoints.filter(point => point.id !== id)
             );
+      };
+
+      const cleanInterestPoints = () => {
+            setInterestPoints(prevPoints => {
+                  const uniquePoints = [];
+                  const seen = new Set();
+            
+                  prevPoints.forEach(point => {
+                        const identifier = `${point.Latitude}-${point.Longitude}`;
+                        if (!seen.has(identifier)) {
+                              seen.add(identifier);
+                              uniquePoints.push(point);
+                        }
+                  });
+            
+                  return uniquePoints;
+            });
       };
 
       // Handle open/close edit interest point modal
@@ -183,7 +199,7 @@ const MapComponent = ({ products, filters, updateFilter }) => {
                                                 }}
                                           >
                                           </Circle>
-                                          <EditInterestPointModal isOpen={isEditInterestPointModalOpen} handleClose={handleEditInterestPointModal} interestPoints={interestPoints} id={selectedInterestPoint} editInterestPoint={updateInterestPointPosition} />
+                                          <EditInterestPointModal isOpen={isEditInterestPointModalOpen} handleClose={handleEditInterestPointModal} interestPoints={interestPoints} id={selectedInterestPoint} editInterestPoint={updateInterestPointPosition} cleanInterestPoints={cleanInterestPoints} />
                                     </div>
                               ))
                         }
