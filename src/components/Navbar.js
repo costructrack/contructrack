@@ -15,10 +15,10 @@ export default function Navbar() {
       const [isOpen, setIsOpen] = useState(false);
     
       return (
-      <nav className="sticky w-full top-0 z-30 ">
+      <nav className="w-full top-0 z-30 ">
             <div className="container mx-auto flex justify-between items-center">
                   <Link href="/home" >
-                        <div className="flex font-bold text-xl">CribAI {currentPath == '/events' && <span className='ml-2 text-xl font-bold magic-text'>Eventos</span>}</div>
+                        <div className="flex font-bold text-xl">HouseAgent {currentPath == '/events' && <span className='ml-2 text-xl font-bold magic-text'>Eventos</span>}</div>
                   </Link>
                   <div className="hidden lg:flex space-x-4">
                         <Link href="/home" className='special-a'>

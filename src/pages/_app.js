@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       return (
             <SessionProvider session={session}>
                   <Head>
-                        <title>CribAI</title>
+                        <title>HoseAgent</title>
                         <meta name="viewport" content="width=device-width, initial-scale=1" />
                         <link rel="icon" href="/logo.png" />
                   </Head>
