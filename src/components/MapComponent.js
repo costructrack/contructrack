@@ -141,7 +141,7 @@ const MapComponent = ({ products }) => {
 
       return (
             <>
-            <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_MAPS_API_KEY} >
+            <LoadScript googleMapsApiKey='AIzaSyDT-_i-4rPlez4HQSIYGHNpDFT0krDeLW8' >
                   <GoogleMap
                         options={mapOptions}
                         mapContainerStyle={containerStyle}
