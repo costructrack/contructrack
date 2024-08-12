@@ -11,7 +11,18 @@ export default function Home() {
 
       const [products, setProducts] = useState(null);
 
-      const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false)
+      const [filters, setFilters] = useState({
+            operationType: '1',
+            // propertyTypes: [],
+            minPrice: 0,
+            maxPrice: 1500,
+            minBedrooms: '0',
+            maxBedrooms: '1',
+            minBathrooms: '0',
+            maxBathrooms: '1',
+            minParkings: '0',
+            maxParkings: '1'
+      });
 
       // Function for fetching products
       async function fetchProducts() {
@@ -21,16 +32,21 @@ export default function Home() {
             setProducts(products);
       }
 
-      // Filters modal close
-      const handleCloseFiltersModal = () => {
-            // submit logic
-            setIsFiltersModalOpen(false);
-      };
+      const updateFilter = (key, value) => {
+            setFilters(prevFilters => ({
+                ...prevFilters,
+                [key]: value
+            }));
+        };
 
       // Fetch products
       useEffect(() => {
             fetchProducts();
       }, []);
+
+      useEffect(() => {
+            console.log(filters);
+      }, [filters]);
 
 
       return (
@@ -39,7 +55,7 @@ export default function Home() {
                   <Input type="text" label="Preguntale a nuestro Agente con IA" placeholder="Quiero alquilar cerca de..." labelPlacement='inside'/>
             </div>
             <div className='relative w-full mb-4'>
-                  <MapComponent products={products} />
+                  <MapComponent products={products} filters={filters} updateFilter={updateFilter} />
             </div>
             <div className="container">
                   {

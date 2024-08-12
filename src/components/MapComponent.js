@@ -14,7 +14,7 @@ const containerStyle = {
 
 
 
-const MapComponent = ({ products }) => {
+const MapComponent = ({ products, filters, updateFilter }) => {
 
       // Map options
       const mapOptions = useMemo(() => ({
@@ -221,7 +221,7 @@ const MapComponent = ({ products }) => {
                         <Button onClick={() => setIsFiltersModalOpen(true)} className='cool-button shadow-lg' size='large'>
                               Seleccionar Filtros
                         </Button>
-                        <FiltersModal isOpen={isFiltersModalOpen} handleClose={handleCloseFiltersModal}/>
+                        <FiltersModal isOpen={isFiltersModalOpen} handleClose={handleCloseFiltersModal} filters={filters} updateFilter={updateFilter} />
                         <Button onClick={() => handleEditInterestPointModal(addNewInterestPoint(), true)} className='cool-button shadow-lg' size='large'>
                               Agregar casa/trabajo
                         </Button>

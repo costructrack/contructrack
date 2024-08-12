@@ -1,9 +1,9 @@
 export const OPERATION_TYPES = {
       1: "Alquilar",
       2: "Comprar",
-      3: "Temporal",
-      4: "Proyectos",
-      5: "Traspaso"
+      // 3: "Temporal",
+      // 4: "Proyectos",
+      // 5: "Traspaso"
   }
   
 export const PROPERTY_TYPES = {
@@ -49,3 +49,16 @@ export function formatNumber(value) {
       // Remove unnecessary .00 and trailing zeroes
       return formatted.replace(/\.00$/, '').replace(/(\.\d*[1-9])0+$/, '$1');
   }
+
+const filters = {
+      operationType: '',
+      propertyTypes: [],
+      minPrice: 0,
+      maxPrice: 0,
+      minBedrooms: 0,
+      maxBedrooms: 1,
+      minBathrooms: 0,
+      maxBathrooms: 1,
+      minParkings: 0,
+      maxParkings: 1
+}
