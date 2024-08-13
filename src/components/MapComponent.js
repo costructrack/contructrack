@@ -14,7 +14,7 @@ const containerStyle = {
 
 
 
-const MapComponent = ({ products, filters, updateFilter, interestPoints, setInterestPoints }) => {
+const MapComponent = ({ products, filters, updateFilter, interestPoints, setInterestPoints, handleProductDetailsModal }) => {
 
       // Map options
       const mapOptions = useMemo(() => ({
@@ -211,8 +211,9 @@ const MapComponent = ({ products, filters, updateFilter, interestPoints, setInte
                                           mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                                           zIndex={2}
                                           getPixelPositionOffset={getRegularPixelPositionOffset}
+                                          
                                     >
-                                          <div className="relative flex justify-center items-center w-5">
+                                          <div className="relative flex justify-center items-center w-5" onClick={() => handleProductDetailsModal(true, product)}>
                                                 {mapZoom >= 15 && (
                                                       <div className="regular-tooltip">
                                                             {formatNumber(product?.Price)}
@@ -239,7 +240,7 @@ const MapComponent = ({ products, filters, updateFilter, interestPoints, setInte
                         </Button>
                         <FiltersModal isOpen={isFiltersModalOpen} handleClose={handleCloseFiltersModal} filters={filters} updateFilter={updateFilter} />
                         <Button onClick={() => handleEditInterestPointModal(addNewInterestPoint(), true)} className='cool-button shadow-lg' size='large'>
-                              Agregar casa/trabajo
+                              Agregar punto de interés
                         </Button>
                   </div>
             </div>

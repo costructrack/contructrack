@@ -60,7 +60,7 @@ export default function EditInterestPointModal({ isOpen, handleClose, interestPo
                   <ModalContent>
                         {(onClose) => (
                               <>
-                                    <ModalHeader className="flex flex-col gap-1 mb-0">Editar casa/trabajo</ModalHeader>
+                                    <ModalHeader className="flex flex-col gap-1 mb-0">Editar punto de interés</ModalHeader>
                                     <ModalBody className='y-overflow-no-bar'>
                                           <p>Mueva el mapa y haga click para definir la ubicación</p>
                                           {address && (

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useEffect, useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import MapComponent from '../components/MapComponent'
-import FiltersModal from '../components/FiltersModal'
+import ProductDetailsModal from '../components/ProductDetailsModal'
 
 import {Card, CardHeader, CardBody, CardFooter, Divider, Input, Image, Button} from "@nextui-org/react";
 
@@ -10,6 +10,8 @@ import {Card, CardHeader, CardBody, CardFooter, Divider, Input, Image, Button} f
 export default function Home() {
 
       const [products, setProducts] = useState(null);
+      const [selectedProduct, setSelectedProduct] = useState({})
+      const [isProductDetailsModalOpen, setIsProductDetailsModalOpen] = useState(false)
 
       const [interestPoints, setInterestPoints] = useState([{ id: 1, Latitude: -12.0464, Longitude: -77.0428, isOpen: false, radius: 1500 }]);
 
@@ -25,6 +27,11 @@ export default function Home() {
             minParkings: '0',
             maxParkings: '10'
       });
+
+      const handleProductDetailsModal = (value, product) => {
+            setSelectedProduct(product)
+            setIsProductDetailsModalOpen(value)
+      }
 
       // Function for fetching products
       async function fetchProducts() {
@@ -63,21 +70,23 @@ export default function Home() {
                   <Input type="text" label="Preguntale a nuestro Agente con IA" placeholder="Quiero alquilar cerca de..." labelPlacement='inside'/>
             </div>
             <div className='relative w-full mb-4'>
-                  <MapComponent products={products} filters={filters} updateFilter={updateFilter} interestPoints={interestPoints} setInterestPoints={setInterestPoints} />
+                  <MapComponent products={products} filters={filters} updateFilter={updateFilter} interestPoints={interestPoints} setInterestPoints={setInterestPoints} handleProductDetailsModal={handleProductDetailsModal} />
             </div>
+            <ProductDetailsModal isOpen={isProductDetailsModalOpen} handleClose={handleProductDetailsModal} product={selectedProduct} />
             <div className="container">
                   <h2 className='text-start mb-2'>{products?.length} resultados</h2>
                   <p className='text-start mb-4 text-xs sm:text-base'>Edita los filtros o pregunta a la inteligencia artificial para encontrar más resultados</p>
                   {
                         products && products.length > 0 && products.map((product, index) => (
-                              <Card key={index} isHoverable className='w-full mb-4'>
+                              <div className='w-full' onClick={() => handleProductDetailsModal(true, product)}>
+                              <Card isHoverable key={index}  className='w-full mb-4'>
                                     <CardBody>
                                           <div className="w-full flex flex-col sm:flex-row gap-4 items-start">
                                                 <div className='w-full sm:w-fit flex justify-center'>
                                                       <Image
-                                                      alt="Foto del producto"
-                                                      className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 mx-auto"
-                                                      src='https://storage.googleapis.com/cribai-bucket/cossy_house.jpg'
+                                                            alt="Foto del producto"
+                                                            className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 mx-auto"
+                                                            src='https://storage.googleapis.com/cribai-bucket/cossy_house.jpg'
                                                       />
                                                 </div>
                                                 <div className="flex flex-col flex-1 text-center sm:text-left text-sm">
@@ -86,7 +95,7 @@ export default function Home() {
                                                       <p className="text-gray-600">Tipo de propiedad: {product?.PropertyType}</p>
                                                       <p className="text-gray-600">Dormitorios: {product?.Bedrooms}</p>
                                                       <p className="text-gray-600">Baños: {product?.Bathrooms}</p>
-                                                      <p className="text-gray-600">Parkeos: {product?.Parkings}</p>
+                                                      <p className="text-gray-600">Parqueos: {product?.Parkings}</p>
 
                                                 </div>
                                                 <div className="flex flex-col items-center sm:items-end justify-between w-full sm:w-auto mt-4 sm:mt-0">
@@ -98,6 +107,7 @@ export default function Home() {
                                           </div>
                                     </CardBody>
                               </Card>
+                              </div>
                         ))
                   }
             </div>
