@@ -24,6 +24,9 @@ export default function Navbar() {
                         <Link href="/home" className='special-a'>
                               <span>Inicio</span>
                         </Link>
+                        <Link href="/agents" className='special-a'>
+                              <span>Agentes</span>
+                        </Link>
                         <Link href="/user" className='special-a'>
                               <span>Usuario</span>
                         </Link>
@@ -42,6 +45,9 @@ export default function Navbar() {
             <div className={`lg:hidden ${isOpen ? 'flex-col' : 'hidden'} w-full pop-up-container rounded-lg `}>
                   <Link href="/home" className='hover:bg-transparent' onClick={() => setIsOpen(false)}>
                         <div className="hover:bg-purple-500 p-2">Inicio</div>
+                  </Link>
+                  <Link href="/agents" className='hover:bg-transparent' onClick={() => setIsOpen(false)}>
+                        <div className="hover:bg-purple-500 p-2">Agentes</div>
                   </Link>
                   <Link href="/user" className='w-full hover:bg-transparent' onClick={() => setIsOpen(false)}>
                   <     div className="hover:bg-purple-500 p-2">Usuario</div>

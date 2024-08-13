@@ -100,3 +100,5 @@ h2 { @apply text-2xl; }
 .x-overflow-no-bar { @apply overflow-x-scroll; scrollbar-width: none; }
 .y-overflow-no-bar { @apply overflow-y-scroll; scrollbar-width: none; }
 .min-h-80vh { min-height: 80vh; }
+.hover-transparent:hover { @apply opacity-75; }
+.fixed-button { @apply fixed bottom-5 right-5 z-50 px-5 py-2; }

@@ -47,7 +47,7 @@ export default function Home() {
             }));
         };
 
-      // Fetch products
+      // Fetch products when filters or interest points changed
       useEffect(() => {
             fetchProducts();
       }, [filters, interestPoints]);
@@ -83,6 +83,18 @@ export default function Home() {
                               </Card>
                         ))
                   }
+            </div>
+            <div className='fixed-button'>
+                  <Link className='flex gap-2' href='/agents'>
+                        <Image
+                              alt="Foto de perfil"
+                              className="w-12 h-12 rounded-full"
+                              src='https://storage.googleapis.com/cribai-bucket/trustable_realtor.jpg'
+                        />
+                        <Button size='lg' className='cool-button'>
+                              Chatear con un Agente
+                        </Button>
+                  </Link>
             </div>
             </>
       );
