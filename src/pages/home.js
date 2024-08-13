@@ -66,20 +66,37 @@ export default function Home() {
                   <MapComponent products={products} filters={filters} updateFilter={updateFilter} interestPoints={interestPoints} setInterestPoints={setInterestPoints} />
             </div>
             <div className="container">
+                  <h2 className='text-start mb-2'>{products?.length} resultados</h2>
+                  <p className='text-start mb-4 text-xs sm:text-base'>Edita los filtros o pregunta a la inteligencia artificial para encontrar más resultados</p>
                   {
                         products && products.length > 0 && products.map((product, index) => (
-                              <Card key={index} className='w-full mb-4'>
-                                    <CardHeader>
-                                          {product?.Description}
-                                    </CardHeader>
-                                    <Divider/>
+                              <Card key={index} isHoverable className='w-full mb-4'>
                                     <CardBody>
-                                          {product?.Description}
+                                          <div className="w-full flex flex-col sm:flex-row gap-4 items-start">
+                                                <div className='w-full sm:w-fit flex justify-center'>
+                                                      <Image
+                                                      alt="Foto del producto"
+                                                      className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 mx-auto"
+                                                      src='https://storage.googleapis.com/cribai-bucket/cossy_house.jpg'
+                                                      />
+                                                </div>
+                                                <div className="flex flex-col flex-1 text-center sm:text-left text-sm">
+                                                      <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold">{product?.Description}</h2>
+                                                      <p className="text-gray-600">Tipo de operación: {product?.OperationType}</p>
+                                                      <p className="text-gray-600">Tipo de propiedad: {product?.PropertyType}</p>
+                                                      <p className="text-gray-600">Dormitorios: {product?.Bedrooms}</p>
+                                                      <p className="text-gray-600">Baños: {product?.Bathrooms}</p>
+                                                      <p className="text-gray-600">Parkeos: {product?.Parkings}</p>
+
+                                                </div>
+                                                <div className="flex flex-col items-center sm:items-end justify-between w-full sm:w-auto mt-4 sm:mt-0">
+                                                      <div className="text-gray-500 text-xs sm:text-sm mt-1">
+                                                            Precio: {product?.Price}
+                                                      </div>
+                                                      <Button className="mt-2 cool-button w-full sm:w-auto">Ver</Button>
+                                                </div>
+                                          </div>
                                     </CardBody>
-                                    <Divider/>
-                                    <CardFooter>
-                                          xd
-                                    </CardFooter>
                               </Card>
                         ))
                   }

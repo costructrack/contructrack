@@ -9,7 +9,7 @@ import { formatNumber } from '../utils/utils';
 
 const containerStyle = {
   width: '100%',
-  height: '500px'
+  height: '480px'
 };
 
 
@@ -27,7 +27,7 @@ const MapComponent = ({ products, filters, updateFilter, interestPoints, setInte
       const [location, setLocation] = useState({ lat: -12.0464, lng: -77.0428 });
       const [error, setError] = useState(null);
 
-      const [mapZoom, setMapZoom] = useState(15)
+      const [mapZoom, setMapZoom] = useState(14)
 
       // Interest points
       const [selectedInterestPoint, setSelectedInterestPoint] = useState(1)
@@ -80,7 +80,7 @@ const MapComponent = ({ products, filters, updateFilter, interestPoints, setInte
                         Latitude: -12.0464,
                         Longitude: -77.0428,
                         isOpen: false,
-                        radius: 1500
+                        radius: 1400
                   };
                   return [...prevPoints, newInterestPoint];
             });
@@ -162,7 +162,7 @@ const MapComponent = ({ products, filters, updateFilter, interestPoints, setInte
                         options={mapOptions}
                         mapContainerStyle={containerStyle}
                         center={location}
-                        zoom={15}
+                        zoom={14}
                         onZoomChanged={handleZoomChange}
                   >
                         {
