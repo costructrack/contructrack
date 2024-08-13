@@ -88,10 +88,10 @@ export default function Home() {
                   <Link className='flex gap-2' href='/agents'>
                         <Image
                               alt="Foto de perfil"
-                              className="w-12 h-12 rounded-full"
+                              className="w-10 h-10 rounded-full"
                               src='https://storage.googleapis.com/cribai-bucket/trustable_realtor.jpg'
                         />
-                        <Button size='lg' className='cool-button'>
+                        <Button size='md' className='cool-button'>
                               Chatear con un Agente
                         </Button>
                   </Link>
