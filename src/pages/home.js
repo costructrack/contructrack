@@ -29,7 +29,7 @@ export default function Home() {
 
                   const payload = {
                         anthropic_version: "vertex-2023-10-16",
-                        messages: [{ role: "user", content: inputValue }],
+                        messages: [{ role: "user", content: userPrompt }],
                         max_tokens: 100,
                         stream: false,
                   };
