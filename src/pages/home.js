@@ -8,12 +8,57 @@ import {Card, CardHeader, CardBody, CardFooter, Divider, Input, Image, Button} f
 
 
 export default function Home() {
+      const { data: session } = useSession();
+
+      const [inputValue, setInputValue] = useState('');
+      const [response, setResponse] = useState('');
+      const [loading, setLoading] = useState(false);
 
       const [products, setProducts] = useState(null);
       const [selectedProduct, setSelectedProduct] = useState({})
       const [isProductDetailsModalOpen, setIsProductDetailsModalOpen] = useState(false)
 
       const [interestPoints, setInterestPoints] = useState([{ id: 1, Latitude: -12.0464, Longitude: -77.0428, isOpen: false, radius: 1500 }]);
+
+      const handlePromptSubmit = async () => {
+            const userPrompt = inputValue;
+            setLoading(true); 
+            setInputValue(''); 
+            try {
+                  const token = process.env.NEXT_PUBLIC_ACCESS_TOKEN;
+
+                  const payload = {
+                        anthropic_version: "vertex-2023-10-16",
+                        messages: [{ role: "user", content: inputValue }],
+                        max_tokens: 100,
+                        stream: false,
+                  };
+            
+                  const res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT, {
+                  method: 'POST',
+                  headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(payload),
+                  });
+            
+                  const data = await res.json();
+                  const textResponse = data.content?.[0]?.text || 'No response received';
+                  setResponse(textResponse);
+            } catch (error) {
+                  setResponse('Error: ' + error.message);
+            } finally {
+                  setLoading(false);
+            }
+      };
+
+      const handleKeyDown = (event) => {
+            if (event.key === 'Enter') {
+                  event.preventDefault(); //this is unnecesary
+                  handlePromptSubmit();
+            }
+      };
 
       const [filters, setFilters] = useState({
             operationType: '2',
@@ -60,14 +105,27 @@ export default function Home() {
       }, [filters, interestPoints]);
 
       useEffect(() => {
-            console.log(filters);
-      }, [filters]);
+            console.log(session);
+      }, []);
 
 
       return (
             <>
             <div className='container'>
-                  <Input type="text" label="Preguntale a nuestro Agente con IA" placeholder="Quiero alquilar cerca de..." labelPlacement='inside'/>
+                  <Input 
+                        className='mb-3' 
+                        value={inputValue} 
+                        onValueChange={setInputValue} 
+                        type="text" 
+                        label="Preguntale a nuestro Agente con IA" 
+                        placeholder="Quiero alquilar cerca de..." 
+                        labelPlacement='inside'
+                        onKeyDown={handleKeyDown}
+                  />
+                  <p className='text-start'>{response}</p>
+                  {
+                        loading && <img className='mx-auto h-10' src="/ring_black.svg" alt="Loading..." />
+                  }
             </div>
             <div className='relative w-full mb-4'>
                   <MapComponent products={products} filters={filters} updateFilter={updateFilter} interestPoints={interestPoints} setInterestPoints={setInterestPoints} handleProductDetailsModal={handleProductDetailsModal} />
@@ -78,8 +136,8 @@ export default function Home() {
                   <p className='text-start mb-4 text-xs sm:text-base'>Edita los filtros o pregunta a la inteligencia artificial para encontrar más resultados</p>
                   {
                         products && products.length > 0 && products.map((product, index) => (
-                              <div className='w-full' onClick={() => handleProductDetailsModal(true, product)}>
-                              <Card isHoverable key={index}  className='w-full mb-4'>
+                              <div key={index} className='w-full' onClick={() => handleProductDetailsModal(true, product)}>
+                              <Card isHoverable   className='w-full mb-4'>
                                     <CardBody>
                                           <div className="w-full flex flex-col sm:flex-row gap-4 items-start">
                                                 <div className='w-full sm:w-fit flex justify-center'>
