@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import { useEffect, useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
+import { getToken } from 'next-auth/jwt';
 import MapComponent from '../components/MapComponent'
 import ProductDetailsModal from '../components/ProductDetailsModal'
+
+//import { VertexAI } from '@google-cloud/vertexai';
 
 import {Card, CardHeader, CardBody, CardFooter, Divider, Input, Image, Button} from "@nextui-org/react";
 
@@ -13,6 +16,8 @@ export default function Home() {
       const [inputValue, setInputValue] = useState('');
       const [response, setResponse] = useState('');
       const [loading, setLoading] = useState(false);
+
+      const [threadID, setThreadId] = useState('')
 
       const [products, setProducts] = useState(null);
       const [selectedProduct, setSelectedProduct] = useState({})
@@ -25,27 +30,86 @@ export default function Home() {
             setLoading(true); 
             setInputValue(''); 
             try {
-                  const token = process.env.NEXT_PUBLIC_ACCESS_TOKEN;
+                  //const token = session.token //process.env.NEXT_PUBLIC_ACCESS_TOKEN
+                  // const payload = {
+                  //       anthropic_version: "vertex-2023-10-16",
+                  //       messages: [{ role: "user", content: userPrompt }],
+                  //       max_tokens: 300,
+                  //       stream: false,
+                  // };
 
-                  const payload = {
-                        anthropic_version: "vertex-2023-10-16",
-                        messages: [{ role: "user", content: userPrompt }],
-                        max_tokens: 100,
-                        stream: false,
-                  };
-            
-                  const res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT, {
-                  method: 'POST',
-                  headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(payload),
+                  // const res = await fetch(`/api/callAi?userPrompt=${userPrompt}`, {
+                  //       method: 'POST',
+                  //       headers: {
+                  //             'Authorization': `Bearer ${session?.token || null}`,
+                  //       },
+                  // });
+                  // const data = await res.json();
+
+                  // const vertexAI = new VertexAI({project: 'construtruck', location: 'us-east5'});
+
+                  // const generativeModel = vertexAI.getGenerativeModel({
+                  //       model: 'claude-3-5-sonnet@20240620',
+                  // });
+                      
+                  // const res = generativeModel.generateContent(userPrompt);
+                  // const data = await res.json();
+
+                  // console.log(data)
+                  // const textResponse = data.content?.[0]?.text || 'No response received';
+                  // setResponse(textResponse);
+                  console.log(process.env.OPENAI_KEY)
+                  const thread_id = threadID
+                  if (thread_id == '') {
+                        const threadResponse = await fetch(`https://api.openai.com/v1/threads`, {
+                              method: 'POST',
+                              headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${process.env.OPENAI_KEY}`,
+                                    'OpenAI-Beta': 'assistants=v2',
+                              },
+                        });
+                        const thread_id = threadResponse.id
+                        setThreadId(thread_id)
+                  }
+
+                  const threadMessageCreate = await fetch(`https://api.openai.com/v1/threads/${thread_id}/messages`, {
+                        method: 'POST',
+                        headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': `Bearer ${process.env.OPENAI_KEY}`,
+                              'OpenAI-Beta': 'assistants=v2',
+                        },
+                        body: JSON.stringify({
+                              "role": "user",
+                              "content": `Give me a JSON object with this exact structure: {operationType: '2', minPrice: 0, maxPrice: 150000, minBedrooms: '0', maxBedrooms: '10', minBathrooms: '0', maxBathrooms: '10', minParkings: '0', maxParkings: '10', interestPoints: [{ id: 1, Latitude: -12.0464, Longitude: -77.0428, isOpen: false, radius: 1500 }] },  this object represents a filter that must answer to a user's request, the filter determines the search filters for an application that searches for places to buy or rent around Lima, Perú. The "interestPoints" must be a list of points with real valid coordinates near Lima, Perú that are acoording to the user's request. This is the user's request: "${userPrompt}". Remember your response must be exacly a JSON object with no text, the JSON object must look like this: {operationType: '2', minPrice: 0, maxPrice: 150000, minBedrooms: '0', maxBedrooms: '10', minBathrooms: '0', maxBathrooms: '10', minParkings: '0', maxParkings: '10', interestPoints: [{ id: 1, Latitude: -12.0464, Longitude: -77.0428, isOpen: false, radius: 1500 }] }`
+                        })
                   });
-            
-                  const data = await res.json();
-                  const textResponse = data.content?.[0]?.text || 'No response received';
-                  setResponse(textResponse);
+
+                  const runCreate = await fetch(`https://api.openai.com/v1/threads/${thread_id}/runs`, {
+                        method: 'POST',
+                        headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': `Bearer ${process.env.OPENAI_KEY}`,
+                              'OpenAI-Beta': 'assistants=v2',
+                        },
+                        body: JSON.stringify({
+                              "assistant_id": `${process.env.OPENAI_ASSISTANT_ID}`
+                          })
+                  });
+
+                  const threadMessages = await fetch(`https://api.openai.com/v1/threads/${thread_id}/messages`, {
+                        method: 'GET',
+                        headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': `Bearer ${process.env.OPENAI_KEY}`,
+                              'OpenAI-Beta': 'assistants=v2',
+                        }
+                  });
+
+                  const lastMessage = threadMessages?.data[0]?.content[0]?.text?.value || 'Error en la API de chat gpt'
+
+                  setResponse(lastMessage)
             } catch (error) {
                   setResponse('Error: ' + error.message);
             } finally {
