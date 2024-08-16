@@ -114,7 +114,7 @@ export default function Home() {
             if (!lastMessage) {
                   lastMessage = 'Error: Could not retrieve the message after multiple attempts.';
             }
-            lastMessageParsed = JSON.parse(lastMessage)
+            const lastMessageParsed = JSON.parse(lastMessage)
             setFilters(lastMessageParsed)
               setResponse(lastMessageParsed.message);
             } catch (error) {
