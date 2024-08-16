@@ -58,14 +58,14 @@ export default function Home() {
                   // console.log(data)
                   // const textResponse = data.content?.[0]?.text || 'No response received';
                   // setResponse(textResponse);
-                  console.log(process.env.OPENAI_KEY)
+                  console.log(process.env.NEXT_PUBLIC_OPENAI_KEY)
                   const thread_id = threadID
                   if (thread_id == '') {
                         const threadResponse = await fetch(`https://api.openai.com/v1/threads`, {
                               method: 'POST',
                               headers: {
                                     'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${process.env.OPENAI_KEY}`,
+                                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_OPENAI_KEY}`,
                                     'OpenAI-Beta': 'assistants=v2',
                               },
                         });
@@ -77,7 +77,7 @@ export default function Home() {
                         method: 'POST',
                         headers: {
                               'Content-Type': 'application/json',
-                              'Authorization': `Bearer ${process.env.OPENAI_KEY}`,
+                              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_OPENAI_KEY}`,
                               'OpenAI-Beta': 'assistants=v2',
                         },
                         body: JSON.stringify({
@@ -90,11 +90,11 @@ export default function Home() {
                         method: 'POST',
                         headers: {
                               'Content-Type': 'application/json',
-                              'Authorization': `Bearer ${process.env.OPENAI_KEY}`,
+                              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_OPENAI_KEY}`,
                               'OpenAI-Beta': 'assistants=v2',
                         },
                         body: JSON.stringify({
-                              "assistant_id": `${process.env.OPENAI_ASSISTANT_ID}`
+                              "assistant_id": `${process.env.NEXT_PUBLIC_OPENAI_ASSISTANT_ID}`
                           })
                   });
 
@@ -102,7 +102,7 @@ export default function Home() {
                         method: 'GET',
                         headers: {
                               'Content-Type': 'application/json',
-                              'Authorization': `Bearer ${process.env.OPENAI_KEY}`,
+                              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_OPENAI_KEY}`,
                               'OpenAI-Beta': 'assistants=v2',
                         }
                   });
