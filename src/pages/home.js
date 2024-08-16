@@ -30,7 +30,6 @@ export default function Home() {
             setLoading(true);
             setInputValue('');
             try {
-              console.log(process.env.NEXT_PUBLIC_OPENAI_KEY);
               let thread_id = threadID;
               if (thread_id === '') {
                 const threadResponse = await fetch(`https://api.openai.com/v1/threads`, {
