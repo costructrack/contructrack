@@ -31,7 +31,7 @@ export default function Home() {
             setInputValue('');
             try {
               let thread_id = threadID;
-              if (thread_id === '') {
+              if (true) { //thread_id === ''
                 const threadResponse = await fetch(`https://api.openai.com/v1/threads`, {
                   method: 'POST',
                   headers: {
